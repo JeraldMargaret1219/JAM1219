@@ -1,7 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api, peso } from "./api";
 import { useStore } from "./store.jsx";
+
+// Editable quantity box: commits on Enter or when you click away
+function QtyInput({ item, setQty }) {
+  const [value, setValue] = useState(String(item.quantity));
+
+  // stay in sync with the cart (after +/- clicks, refreshes, or server corrections)
+  useEffect(() => {
+    setValue(String(item.quantity));
+  }, [item.quantity]);
+
+  const commit = () => {
+    const n = parseInt(value, 10);
+    if (Number.isNaN(n) || n < 1) {
+      setValue(String(item.quantity)); // invalid, so revert (use Remove to delete)
+      return;
+    }
+    if (n !== item.quantity) setQty(item, n);
+  };
+
+  return (
+    <input
+      type="number"
+      min="1"
+      step="1"
+      inputMode="numeric"
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      onBlur={commit}
+      onKeyDown={(e) => { if (e.key === "Enter") e.target.blur(); }}
+      aria-label="Quantity"
+      className="w-16 text-center border border-gray-300 rounded px-2 py-1 pointer-events-auto select-text cursor-text focus:outline-none focus:ring-2 focus:ring-gray-400"
+    />
+  );
+}
 
 export default function Cart() {
   const { authed, cart, setCart, refreshCart } = useStore();
@@ -14,9 +48,13 @@ export default function Cart() {
   const total = items.reduce((s, i) => s + i.quantity * Number(i.product_detail.price), 0);
 
   const setQty = async (item, quantity) => {
+    setError("");
     try {
       setCart(await api("/cart/set_quantity/", { method: "POST", body: { product: item.product, quantity } }));
-    } catch (e) { setError(e.message); }
+    } catch (e) {
+      setError(e.message);
+      await refreshCart(); // resync so the typed box doesn't show a rejected value
+    }
   };
 
   const checkout = async () => {
@@ -40,7 +78,7 @@ export default function Cart() {
             <span className="price">{peso(i.product_detail.price)}</span>
             <div className="qty">
               <button onClick={() => setQty(i, i.quantity - 1)} aria-label="Decrease">−</button>
-              <input value={i.quantity} readOnly aria-label="Quantity" />
+              <QtyInput item={i} setQty={setQty} />
               <button onClick={() => setQty(i, i.quantity + 1)} aria-label="Increase">+</button>
             </div>
             <span className="price">{peso(i.quantity * i.product_detail.price)}</span>

@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body { @apply bg-page text-ink font-sans text-sm; }
+  a { @apply text-orange no-underline hover:underline; }
+  :focus-visible { @apply outline outline-2 outline-orange outline-offset-2; }
+}
+
+@layer components {
+  /* Layout */
+  .container { @apply mx-auto max-w-[1200px] px-4; }
+  .page { @apply pt-5 pb-12; }
+  .muted { @apply text-muted; }
+  .center { @apply text-center; }
+  .error { @apply text-[#d0011b]; }
+  .ok { @apply text-[#26aa99]; }
+
+  /* Header */
+  .header { @apply sticky top-0 z-10 text-white bg-gradient-to-b from-orange-light to-[#f63]; }
+  .header-row { @apply flex flex-wrap items-center gap-6 py-3; }
+  .logo { @apply text-white text-[30px] font-extralight tracking-[-0.5px] hover:no-underline; }
+  .search { @apply flex flex-1 min-w-[220px] bg-white rounded-sm p-[3px]; }
+  .search input { @apply flex-1 border-0 px-3 py-2 text-black bg-transparent focus:outline-none; }
+  .search button { @apply bg-orange text-white border-0 rounded-sm px-[22px] cursor-pointer hover:bg-orange-dark; }
+  .nav { @apply flex items-center gap-[18px]; }
+  .nav a,
+  .link-btn { @apply text-white bg-transparent border-0 cursor-pointer p-0 hover:opacity-[.85] hover:no-underline; font: inherit; }
+  .link-btn.dark { @apply text-ink hover:text-orange; }
+  .cart-link { @apply relative pr-1; }
+  .badge { @apply absolute -top-2.5 -right-3 bg-white text-orange rounded-[10px] text-xs min-w-[18px] text-center px-[5px] py-px font-semibold; }
+
+  /* Home */
+  .banner { @apply bg-[linear-gradient(120deg,#ee4d2d,#ff7337)] text-white rounded-[3px] px-8 py-12 mb-6; }
+  .banner h1 { @apply mb-1 text-2xl; }
+  .banner p { @apply text-base opacity-95; }
+  .section-title { @apply text-base font-medium text-orange mb-2 p-3 bg-white border-b-4 border-orange; }
+  .grid { @apply gap-2.5 mt-2.5 grid-cols-[repeat(auto-fill,minmax(180px,1fr))]; display: grid; }
+  .card { @apply bg-white border border-transparent rounded-sm text-ink flex flex-col hover:border-orange hover:no-underline hover:shadow-[0_1px_6px_rgba(0,0,0,0.12)]; }
+  .thumb { @apply w-full aspect-square object-cover bg-[#fafafa]; }
+  .thumb-empty { @apply flex items-center justify-center text-muted bg-[#fafafa]; }
+  .card-body { @apply flex flex-col gap-2 flex-1 px-2.5 pt-2 pb-3; }
+  .card-name { @apply leading-[1.4] line-clamp-2 min-h-[2.8em]; }
+  .card-foot { @apply flex justify-between items-baseline mt-auto; }
+  .price { @apply text-orange font-medium; }
+  .price.big { @apply text-2xl; }
+  .stock { @apply text-xs text-muted; }
+
+  /* Panels & buttons */
+  .panel { @apply bg-white rounded-[3px] p-5 mb-3 shadow-[0_1px_1px_rgba(0,0,0,0.05)]; }
+  .btn { @apply inline-block rounded-sm px-6 py-3 text-sm text-center cursor-pointer border border-orange hover:no-underline disabled:opacity-50 disabled:cursor-not-allowed; }
+  .btn-solid { @apply bg-orange text-white hover:enabled:bg-orange-dark; }
+  .btn-outline { @apply bg-orange-tint text-orange hover:enabled:bg-[#ffeee8]; }
+  .full { @apply w-full; }
+  .empty { @apply text-center px-5 py-16; }
+
+  /* Product detail */
+  .detail { @apply grid grid-cols-1 gap-8 min-[721px]:grid-cols-[minmax(240px,450px)_1fr]; }
+  .detail-img { @apply w-full aspect-square object-cover; }
+  .detail-name { @apply text-xl font-medium mb-3; }
+  .price-box { @apply bg-[#fafafa] px-5 py-3.5 mb-4; }
+  .qty-row { @apply flex items-center gap-5 my-5; }
+  .qty { @apply inline-flex; }
+  .qty button { @apply w-8 h-8 bg-white border border-line cursor-pointer text-base hover:bg-[#fafafa]; }
+  .qty input { @apply w-[50px] h-8 text-center border border-line border-x-0; }
+  .actions { @apply flex gap-3 mb-2; }
+  .desc { @apply whitespace-pre-line leading-[1.6]; }
+
+  /* Cart & orders */
+  .cart-row { @apply grid grid-cols-2 gap-3 items-center py-3.5 border-b border-line last:border-b-0 min-[721px]:grid-cols-[1fr_110px_110px_110px_70px]; }
+  .cart-name { @apply text-ink; }
+  .checkout-bar { @apply flex justify-end items-center gap-6 sticky bottom-0; }
+  .order-head { @apply pb-3 border-b border-line; }
+  .order-row { @apply grid grid-cols-[1fr_60px_110px] gap-3 py-3 border-b border-line; }
+  .order-total { @apply text-right pt-3.5; }
+
+  /* Auth */
+  .auth-wrap { @apply flex justify-center pt-6; }
+  .auth { @apply w-full max-w-[400px] flex flex-col gap-3; }
+  .auth h2 { @apply text-2xl font-medium mb-1; }
+  .auth input { @apply p-3 border border-line rounded-sm text-sm focus:outline-none focus:border-orange; }
+}
+
+/* Responsive tweak: logo shrinks on small screens */
+@media (max-width: 720px) {
+  .logo { @apply text-2xl; }
+}

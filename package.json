@@ -1,0 +1,24 @@
+{
+  "name": "mallare_python_finals",
+  "version": "1.0.0",
+  "description": "npm install npm run dev        # http://localhost:5173",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JeraldMargaret1219/JAM1219.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/JeraldMargaret1219/JAM1219/issues"
+  },
+  "homepage": "https://github.com/JeraldMargaret1219/JAM1219#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
+  }
+}

@@ -8,7 +8,7 @@ export default function ProductDetail() {
   const nav = useNavigate();
   const { authed, refreshCart } = useStore();
   const [p, setP] = useState(null);
-  const [qty, setQty] = useState(1);
+  const [qty, setQty] = useState("1"); // string so the field can be typed in freely
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
 
@@ -16,11 +16,20 @@ export default function ProductDetail() {
     api(`/products/${id}/`, { auth: false }).then(setP).catch((e) => setError(e.message));
   }, [id]);
 
+  // typed text -> a valid number between 1 and stock
+  const safeQty = () => {
+    const n = parseInt(qty, 10);
+    if (Number.isNaN(n) || n < 1) return 1;
+    return p ? Math.min(n, p.stock) : n;
+  };
+
   const add = async (goToCart) => {
     if (!authed) return nav("/login");
     setMsg(""); setError("");
+    const quantity = safeQty();
+    setQty(String(quantity)); // show the corrected number
     try {
-      await api("/cart/add/", { method: "POST", body: { product: p.id, quantity: qty } });
+      await api("/cart/add/", { method: "POST", body: { product: p.id, quantity } });
       await refreshCart();
       if (goToCart) nav("/cart");
       else setMsg("Added to cart.");
@@ -40,9 +49,21 @@ export default function ProductDetail() {
         <div className="qty-row">
           <span>Quantity</span>
           <div className="qty">
-            <button onClick={() => setQty(Math.max(1, qty - 1))} aria-label="Decrease">−</button>
-            <input value={qty} readOnly aria-label="Quantity" />
-            <button onClick={() => setQty(Math.min(p.stock, qty + 1))} aria-label="Increase">+</button>
+            <button onClick={() => setQty(String(Math.max(1, safeQty() - 1)))} aria-label="Decrease">−</button>
+            <input
+              type="number"
+              min="1"
+              max={p.stock}
+              step="1"
+              inputMode="numeric"
+              value={qty}
+              onChange={(e) => setQty(e.target.value)}
+              onBlur={() => setQty(String(safeQty()))}
+              onKeyDown={(e) => { if (e.key === "Enter") e.target.blur(); }}
+              aria-label="Quantity"
+              className="w-16 text-center border border-gray-300 rounded px-2 py-1 pointer-events-auto select-text cursor-text focus:outline-none focus:ring-2 focus:ring-gray-400"
+            />
+            <button onClick={() => setQty(String(Math.min(p.stock, safeQty() + 1)))} aria-label="Increase">+</button>
           </div>
           <span className="muted">{p.stock} available</span>
         </div>

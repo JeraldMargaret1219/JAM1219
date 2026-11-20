@@ -20,15 +20,15 @@ export default function Home() {
     <>
       {!q && (
         <section className="banner">
-          <h1>Shop more, pay less.</h1>
-          <p>Everything you need, delivered to your door.</p>
+          <h1>500 pesos mo, gawin nating 500 pesos ko.</h1>
+          <p>Hindi ito Shopee ito.</p>
         </section>
       )}
-      <h2 className="section-title">{q ? `Results for “${q}”` : "Products for you"}</h2>
+      <h2 className="section-title">{q ? `Results for “${q}”` : "Products not for you"}</h2>
       {error && <p className="error">Couldn’t load products: {error}</p>}
       {!products && !error && <p className="muted">Loading products…</p>}
       {products && products.length === 0 && (
-        <p className="muted">No products found. Try a different search.</p>
+        <p className="muted">No products found. Don't be disappointed.</p>
       )}
       <div className="grid">
         {products?.map((p) => <ProductCard key={p.id} product={p} />)}

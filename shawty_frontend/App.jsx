@@ -27,7 +27,7 @@ function Header() {
         <nav className="nav">
           {authed ? (
             <>
-              <Link to="/orders">My purchases</Link>
+              <Link to="/orders">My budols</Link>
               <button className="link-btn" onClick={logout}>Log out</button>
             </>
           ) : (

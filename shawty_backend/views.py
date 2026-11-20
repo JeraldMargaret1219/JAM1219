@@ -10,6 +10,7 @@ from .shop.serializers import (RegisterSerializer, ProductSerializer, CartSerial
                           CartProductSerializer, TransactionSerializer)
 
 
+
 class RegisterView(generics.CreateAPIView):
     queryset = BaseUser.objects.all()
     serializer_class = RegisterSerializer
@@ -90,3 +91,4 @@ class TransactionViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         return Transaction.objects.filter(buyer=self.request.user).prefetch_related(
             "product_transactions__item")
+
